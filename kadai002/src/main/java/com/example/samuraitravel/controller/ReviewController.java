@@ -91,7 +91,7 @@ import com.example.samuraitravel.service.ReviewService;
          model.addAttribute("review", review);		
          model.addAttribute("reviewEditForm", reviewEditForm);		
          		
-         return "reviews/edit";		
+         return "review/edit";		
      } 		
      		
      @PostMapping("/{reviewId}/update")		
@@ -108,7 +108,7 @@ import com.example.samuraitravel.service.ReviewService;
          if (bindingResult.hasErrors()) {		
              model.addAttribute("house", house);		
              model.addAttribute("review", review);		
-             return "reviews/edit";		
+             return "review/edit";		
          }		
          		
          reviewService.update(reviewEditForm);		
