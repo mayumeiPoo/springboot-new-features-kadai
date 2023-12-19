@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+ <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">    
+     <head>
+         <div th:replace="~{fragment :: meta}"></div>   
+              
+         <div th:replace="~{fragment :: styles}"></div>
+         
+        
+           
+         <title>お気に入り一覧</title>   
+     </head>
+     <body>
+	
+         <div class="samuraitravel-wrapper">
+             <!-- ヘッダー -->
+             <div th:replace="~{fragment :: header}"></div>
+             
+             <main>
+                 <div class="container pt-4 pb-5 samuraitravel-container">
+                     <div class="row justify-content-center">
+                         <div class="col-xxl-9 col-xl-10 col-lg-11">
+                             <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                 <ol class="breadcrumb mb-0">                        
+                                     <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+                                     <li class="breadcrumb-item active" aria-current="page">お気に入り一覧</li>
+                                 </ol>
+                             </nav>
+                             <h1 class="mb-4 text-center">お気に入り一覧</h1>
+                            <div class="mb-3" th:each="favorite : ${favoritePage}">														
+                                 <a th:href="@{/houses/__${favorite.getHouse().getId()}__}" class="link-dark samuraitravel-card-link">														
+                                     <div class="card h-100">   														
+                                         <div class="row g-0">														
+                                             <div class="col-md-4">                                                                                														
+                                                 <img th:if="${favorite.getHouse().getImageName()}" th:src="@{/storage/__${favorite.getHouse().getImageName()}__}" class="card-img-top samuraitravel-horizontal-card-image" alt="店舗画像">                                                     														
+                                                 <img th:unless="${favorite.getHouse().getImageName()}" th:src="@{/images/noImage.png}" class="card-img-top samuraitravel-horizontal-card-image" alt="NO IMAGE">                                                    														
+                                             </div> 														
+                                             <div class="col-md-8">                                                                                                                        														
+                                                 <div class="card-body">                                    														
+                                                     <h3 class="card-title mb-3" th:text="${favorite.getHouse().getName()}"></h3>                                            														
+  														
+                                                     <hr class="mb-3">														
+                                                     														
+                                                     <p class="card-text mb-2">														
+                                                         <span th:text="${favorite.getHouse().getDescription()}"></span>														
+                                                     </p>                                                    														
+                                                     														
+                                                     <p class="card-text mb-2">														
+                                                         <small class="text-muted" th:text="${'〒' + favorite.getHouse().getPostalCode()}"></small>														
+                                                         <small class="text-muted" th:text="${favorite.getHouse().getAddress()}"></small>                                                      														
+                                                     </p>   														
+                                                                                                                                                                                                                                    														
+                                                     <p class="card-text">														
+                                                         <span th:text="${#numbers.formatInteger(favorite.getHouse().getPrice(), 1, 'COMMA') + '円 / 泊'}"></span>														
+                                                     </p>                                    														
+                                                 </div>														
+                                             </div>														
+                                         </div>														
+                                     </div>    														
+                                 </a>            														
+                             </div>
+                             <!-- ページネーション -->
+                             <div th:if="${favoritePage.getTotalPages() > 1}" class="d-flex justify-content-center">														
+                                 <nav aria-label="お気に入り一覧ページ">														
+                                     <ul class="pagination">														
+                                         <li class="page-item">														
+                                             <span th:if="${favoritePage.isFirst()}" class="page-link disabled">前</span>														
+                                             <a th:unless="${favoritePage.isFirst()}" th:href="@{/favorite(page = ${favoritePage.getNumber() - 1})}" class="page-link samuraitravel-page-link">前</a>														
+                                         </li>														
+                                         <li th:each="i : ${#numbers.sequence(0, favoritePage.getTotalPages() - 1)}" class="page-item">														
+                                             <span th:if="${i == favoritePage.getNumber()}" class="page-link active samuraitravel-active" th:text="${i + 1}"></span>														
+                                             <a th:unless="${i == favoritePage.getNumber()}" th:href="@{/favorite(page = ${i})}" class="page-link samuraitravel-page-link" th:text="${i + 1}"></a>														
+                                         </li>														
+                                         <li class="page-item">                        														
+                                             <span th:if="${favoritePage.isLast()}" class="page-link disabled">次</span>														
+                                             <a th:unless="${favoritePage.isLast()}" th:href="@{/favorite(page = ${favoritePage.getNumber() + 1})}" class="page-link samuraitravel-page-link">次</a>														
+                                         </li>														
+                                     </ul>														
+                                 </nav> 														
+                             </div>  														
+                                 														
+                         </div>                          														
+                     </div>														
+                 </div>                                                														
+             </main> 
+              <!-- フッター -->
+             <div th:replace="~{fragment :: footer}"></div>
+         </div>    
+         
+         <div th:replace="~{fragment :: scripts}"></div>  
+	 </body>
+ </html>
